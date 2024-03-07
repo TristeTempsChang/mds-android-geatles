@@ -12,6 +12,7 @@ activityCompose = "1.7.0"
 composeBom = "2023.08.00"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
+picasso = "2.71828"
 roomCompiler = "2.6.1"
 roomRuntime = "2.6.1"
 
@@ -25,6 +26,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }

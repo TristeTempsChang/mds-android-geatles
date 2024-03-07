@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import fr.mds.helloworld.data.api.ApiService;
 import fr.mds.helloworld.data.api.character.Character;
 import fr.mds.helloworld.data.api.character.CharacterAdapter;
 import fr.mds.helloworld.data.api.character.CharactersResponse;
+import fr.mds.helloworld.decoration.GridSpacingItemDecoration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RecyclerView recyclerView = findViewById(R.id.characterList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        int numberOfColumns = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+
+        int spacingInPixels = 20;
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spacingInPixels));
+
 
         EditText editText = findViewById(R.id.inputCharacter);
         editText.requestFocus();

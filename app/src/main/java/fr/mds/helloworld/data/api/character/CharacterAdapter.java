@@ -15,13 +15,15 @@ import fr.mds.helloworld.MainActivity;
 import fr.mds.helloworld.R;
 
 public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.ViewHolder> {
-    private List<Character> characters;
+    private final List<Character> characters;
     private Context context;
 
     public CharacterAdapter(MainActivity mainActivity, List<Character> characters) {
         this.context = context;
         this.characters = characters;
     }
+
+
 
     @NonNull
     @Override

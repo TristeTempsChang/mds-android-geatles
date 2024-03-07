@@ -1,9 +1,12 @@
 package fr.mds.helloworld;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,8 +45,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         EditText editText = findViewById(R.id.inputCharacter);
-        editText.requestFocus();
         Button searchButton = findViewById(R.id.searchButton);
+
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                        event != null && event.getAction() == KeyEvent.ACTION_DOWN &&
+                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    searchButton.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Méthode pour afficher la boîte de dialogue
+    @SuppressLint("SetTextI18n")
     private void showCharacterDetailsDialog(Character character) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);

@@ -58,6 +58,16 @@ public class MainActivity extends AppCompatActivity {
                             CharacterAdapter adapter = new CharacterAdapter(MainActivity.this, characters);
                             recyclerView.setAdapter(adapter);
 
+                            recyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
+                                @Override
+                                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                                    return e.getActionMasked() == MotionEvent.ACTION_MOVE || super.onInterceptTouchEvent(rv, e);
+                                }
+
+                                @Override
+                                public void onTouchEvent(RecyclerView rv, MotionEvent e) {}
+                            });
+
                             recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
                                 @Override
                                 public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
@@ -94,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Méthode pour afficher la boîte de dialogue
-    // Méthode pour afficher la boîte de dialogue
     private void showCharacterDetailsDialog(Character character) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -106,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         TextView characterTypeTextView = dialogView.findViewById(R.id.character_type);
         TextView characterSpeciesTextView = dialogView.findViewById(R.id.character_species);
         TextView characterGenderTextView = dialogView.findViewById(R.id.character_gender);
-        ImageView characterImageView = dialogView.findViewById(R.id.character_image);
         Button closeButton = dialogView.findViewById(R.id.closeButton);
 
         characterNameTextView.setText("Name: " + character.getName());

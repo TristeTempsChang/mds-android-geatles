@@ -5,19 +5,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.EditText;
+
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.List;
 
-import javax.xml.datatype.Duration;
-
-import fr.mds.helloworld.data.database.AppDatabase;
-import fr.mds.helloworld.data.models.Student;
-import fr.mds.helloworld.utils.DatabaseInitializer;
+import fr.mds.helloworld.data.api.ApiService;
+import fr.mds.helloworld.data.api.character.Character;
+import fr.mds.helloworld.data.api.character.CharactersResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private StudentViewModel mViewModel;
@@ -27,38 +31,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // drop the existing data
-        DatabaseInitializer.deleteAllStudentsAtAppLaunch(AppDatabase.getInstance(getApplicationContext()));
+        EditText editText = findViewById(R.id.inputCharacter); // Assurez-vous que l'ID correspond à celui de votre layout
+        Button searchButton = findViewById(R.id.searchButton);
 
-        // Populate database
-        DatabaseInitializer.populateDatabaseAsync(AppDatabase.getInstance(getApplicationContext()));
-
-        mViewModel = new ViewModelProvider(this).get(StudentViewModel.class);
-        mViewModel.setDao(AppDatabase.getInstance(getApplicationContext()).getStudentDao());
-
-        Button button = findViewById(R.id.button3);
-        button.setOnClickListener(new View.OnClickListener() {
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listStudents();
-            }
-        });
-    }
+                String characterName = editText.getText().toString();
+                Call<CharactersResponse> call = ApiService.fetchCharacter(characterName);
 
-    public void listStudents() {
-        LiveData<List<Student>> students = mViewModel.getAllStudents();
+                call.enqueue(new Callback<CharactersResponse>() {
+                    @Override
+                    public void onResponse(Call<CharactersResponse> call, Response<CharactersResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            TextView resultTextView = findViewById(R.id.getCharacter);
+                            List<Character> characters = response.body().getResults();
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (Character character : characters) {
+                                stringBuilder.append(character.getName()).append("\n");
+                            }
+                            resultTextView.setText(stringBuilder.toString());
+                        } else {
+                            // Gérez l'erreur ici
+                        }
+                    }
 
-        final TextView textView = findViewById(R.id.textView);
-        StringBuilder stringBuilder = new StringBuilder();
 
-        MainActivity mThis = this;
-        students.observe(this, new Observer<List<Student>>() {
-            @Override
-            public void onChanged(List<Student> students) {
-                for (Student student : students) {
-                    stringBuilder.append(student.getFirstName()).append("\n");
-                }
-                textView.setText(stringBuilder.toString());
+                    @Override
+                    public void onFailure(Call<CharactersResponse> call, Throwable t) {
+                        // Gérez l'échec de l'appel ici
+                    }
+                });
             }
         });
     }

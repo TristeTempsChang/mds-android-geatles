@@ -67,6 +67,12 @@ dependencies {
     debugImplementation libs.ui.tooling
     debugImplementation libs.ui.test.manifest
 
-    implementation "androidx.room:room-runtime:2.6.1"
-    annotationProcessor "androidx.room:room-compiler:2.6.1"
+    implementation libs.room.runtime
+    annotationProcessor libs.room.compiler
+
+    // Retrofit (lib request HTTP)
+    implementation libs.retrofit
+    // Converter Gson (lib convert object to JSON)
+    implementation libs.converter.gson
+
 }

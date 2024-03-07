@@ -27,4 +27,10 @@ public interface StudentDao {
 
     @Query("SELECT * FROM `students` ORDER BY `students`.`last_name`")
     LiveData<List<Student>> getAllStudents();
+
+    @Query("SELECT COUNT(*) FROM students")
+    int getStudentsCount();
+
+    @Query("DELETE FROM Students")
+    void deleteAllStudents();
 }

@@ -9,11 +9,32 @@ import fr.mds.helloworld.data.models.Student;
 
 public class DatabaseInitializer {
     private static void populateWithStudents(@NonNull AppDatabase database) {
-        database.getStudentDao().insertStudent(
-                new Student("Quentin", "GUILLEMAND"),
-                new Student("Paul", "JAGUIN"),
-                new Student("Julick", "MELLAH")
-        );
+        if (database.getStudentDao().getStudentsCount() == 0) {
+            database.getStudentDao().insertStudent(
+                    new Student("Quentin", "GUILLEMAND"),
+                    new Student("Paul", "JAGUIN"),
+                    new Student("Julick", "MELLAH")
+            );
+        }
+    }
+
+    public static void deleteAllStudentsAtAppLaunch(@NonNull AppDatabase database) {
+        DeleteAllStudentsAsyncTask task = new DeleteAllStudentsAsyncTask(database);
+        task.execute();
+    }
+
+    private static class DeleteAllStudentsAsyncTask extends AsyncTask<Void, Void, Void> {
+        private AppDatabase mDatabase;
+
+        public DeleteAllStudentsAsyncTask(AppDatabase database) {
+            mDatabase = database;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mDatabase.getStudentDao().deleteAllStudents();
+            return null;
+        }
     }
 
     private static void populateDatabaseSync(@NonNull AppDatabase database) {

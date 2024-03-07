@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // drop the existing data
+        DatabaseInitializer.deleteAllStudentsAtAppLaunch(AppDatabase.getInstance(getApplicationContext()));
+
+        // Populate database
         DatabaseInitializer.populateDatabaseAsync(AppDatabase.getInstance(getApplicationContext()));
 
         mViewModel = new ViewModelProvider(this).get(StudentViewModel.class);

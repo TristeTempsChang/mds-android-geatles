@@ -1,15 +1,8 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< Updated upstream
     android:width="380dp"
     android:height="599dp"
     android:viewportWidth="380.09"
     android:viewportHeight="599.96">
-=======
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
->>>>>>> Stashed changes
     <!-- Transparent background -->
     <path
         android:fillColor="#00000000"

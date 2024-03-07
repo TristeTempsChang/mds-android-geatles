@@ -30,6 +30,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private StudentViewModel mViewModel;
+    private AlertDialog characterDetailsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,16 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             CharacterAdapter adapter = new CharacterAdapter(MainActivity.this, characters);
                             recyclerView.setAdapter(adapter);
 
-                            recyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
-                                @Override
-                                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                                    return e.getActionMasked() == MotionEvent.ACTION_MOVE || super.onInterceptTouchEvent(rv, e);
-                                }
-
-                                @Override
-                                public void onTouchEvent(RecyclerView rv, MotionEvent e) {}
-                            });
-
+                            // Ajouter un écouteur de clic sur les éléments du RecyclerView
                             recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
                                 @Override
                                 public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
@@ -106,13 +98,13 @@ public class MainActivity extends AppCompatActivity {
                                 public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
                             });
                         } else {
-
+                            // Gérez l'erreur ici
                         }
                     }
 
                     @Override
                     public void onFailure(Call<CharactersResponse> call, Throwable t) {
-
+                        // Gérez l'échec de l'appel ici
                     }
                 });
             }
@@ -122,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
     // Méthode pour afficher la boîte de dialogue
     @SuppressLint("SetTextI18n")
     private void showCharacterDetailsDialog(Character character) {
+        // Fermer la boîte de dialogue précédente si elle est ouverte
+        if (characterDetailsDialog != null && characterDetailsDialog.isShowing()) {
+            characterDetailsDialog.dismiss();
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.dialog_character_details, null);
@@ -142,15 +139,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Charger l'image ici depuis l'URL character.getImage() avec une bibliothèque comme Picasso ou Glide
 
-        final AlertDialog dialog = builder.create();
+        characterDetailsDialog = builder.create(); // Attribuer la boîte de dialogue à la variable de classe
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                characterDetailsDialog.dismiss();
             }
         });
 
-        dialog.show();
+        characterDetailsDialog.show();
     }
 }

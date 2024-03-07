@@ -31,18 +31,30 @@ public class MainActivity extends AppCompatActivity {
 
         mViewModel = new ViewModelProvider(this).get(StudentViewModel.class);
         mViewModel.setDao(AppDatabase.getInstance(getApplicationContext()).getStudentDao());
+
+        Button button = findViewById(R.id.button3);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listStudents();
+            }
+        });
     }
 
     public void listStudents() {
         LiveData<List<Student>> students = mViewModel.getAllStudents();
+
+        final TextView textView = findViewById(R.id.textView);
+        StringBuilder stringBuilder = new StringBuilder();
 
         MainActivity mThis = this;
         students.observe(this, new Observer<List<Student>>() {
             @Override
             public void onChanged(List<Student> students) {
                 for (Student student : students) {
-                    Toast.makeText(mThis, student.getFirstName(), Toast.LENGTH_SHORT);
+                    stringBuilder.append(student.getFirstName()).append("\n");
                 }
+                textView.setText(stringBuilder.toString());
             }
         });
     }
